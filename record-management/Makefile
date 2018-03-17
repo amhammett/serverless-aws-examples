@@ -7,8 +7,11 @@ else
     yarn_path := $(shell which yarn)
 endif
 
-serverless_path := ./node_modules/.bin/serverless
-lambda_local_path := ./node_modules/.bin/lambda-local
+npm_jshint_path := ./node_modules/.bin/jshint
+npm_lambda_local_path := ./node_modules/.bin/lambda-local
+npm_mocha_path := ./node_modules/.bin/mocha
+npm_serverless_path := ./node_modules/.bin/serverless
+npm_yamllint_path := ./node_modules/.bin/yamllint
 
 # vars
 env := missing
@@ -20,8 +23,8 @@ stage := v1
 AWS_PARAMS=AWS_PROFILE=$(profile) AWS_DEFAULT_REGION=${region}
 LAMBDA_PARAMS=ENV=$(env)
 
-serverless_cmd := $(AWS_PARAMS) $(LAMBDA_PARAMS) $(serverless_path)
-lambda_local_cmd := $(AWS_PARAMS) $(LAMBDA_PARAMS) $(lambda_local_path)
+serverless_cmd := $(AWS_PARAMS) $(LAMBDA_PARAMS) $(npm_serverless_path)
+lambda_local_cmd := $(AWS_PARAMS) $(LAMBDA_PARAMS) $(npm_lambda_local_path)
 
 # help
 help: ## this help text
@@ -36,13 +39,16 @@ local-invoke: ## invoke function locally
 	$(lambda_local_cmd) -t 20 -f $(function)
 
 # test
-test: | jslint mocha ## test all the things
+test: | yaml-lint js-lint mocha ## test all the things
 
-jslint: ## lint js
-	./node_modules/.bin/jshint src/*
+js-lint: ## lint js
+	$(npm_jshint_path) src/*
 
 mocha: ## mocha/chai tests
-	./node_modules/.bin/mocha
+	$(npm_mocha_path)
+
+yaml-lint: ## lint yaml
+	$(npm_yamllint_path) *.yml
 
 # deployment
 
