@@ -4,9 +4,9 @@ Serverless AWS Examples
 A collection of examples using Serverless to manage AWS resources.
 
 
-## Message Queue Service
+## Record Management
 
-A Lambda api function that accepts rest request working with a DynamoDB backend.
+A Lambda api function that accepts rest request working with a DynamoDB backend to manage records.
 
 Resources:
 
