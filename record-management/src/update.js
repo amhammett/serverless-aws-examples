@@ -9,12 +9,12 @@ module.exports.update = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
 
-  if (typeof data.record !== 'string' || typeof data.id !== 'string') {
+  if (typeof data.data !== 'string' || typeof data.id !== 'string') {
     console.error('Validation Failed');
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: 'Couldn\'t update the record item.',
+      body: 'Couldn\'t update the record.',
     });
     return;
   }
@@ -25,15 +25,15 @@ module.exports.update = (event, context, callback) => {
       uuid: event.pathParameters.uuid,
     },
     ExpressionAttributeNames: {
-      '#r': 'record',
+      '#d': 'data',
     },
     ExpressionAttributeValues: {
-      ':record': data.record,
+      ':data': data.data,
       ':id': data.id,
       ':updatedAt': timestamp,
     },
     UpdateExpression:
-      'SET #r = :record, id = :id, updatedAt = :updatedAt',
+      'SET #d = :data, id = :id, updatedAt = :updatedAt',
     ReturnValues: 'ALL_NEW',
   };
 
@@ -43,7 +43,7 @@ module.exports.update = (event, context, callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t fetch the record item.',
+        body: 'Couldn\'t fetch the record.',
       });
       return;
     }

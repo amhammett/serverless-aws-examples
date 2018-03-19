@@ -9,7 +9,8 @@ const table_name = process.env.DYNAMODB_TABLE;
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
-  if (typeof data.record !== 'string') {
+
+  if (typeof data.data !== 'string') {
     console.error('Validation Failed');
     callback(null, {
       statusCode: 400,
@@ -23,7 +24,7 @@ module.exports.create = (event, context, callback) => {
     TableName: table_name,
     Item: {
       uuid: uuid.v1(),
-      record: data.record,
+      record: data.data,
       id: data.id,
       createdAt: timestamp,
       updatedAt: timestamp,
