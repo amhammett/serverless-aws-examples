@@ -52,7 +52,7 @@ functions:
     handler: src/get.get
     events:
       - http:
-          path:   rms/record/{id}
+          path:   rms/record/{uuid}
           method: get
           cors:   yes
 
@@ -60,7 +60,7 @@ functions:
     handler: src/delete.delete
     events:
       - http:
-          path:   rms/record/{id}
+          path:   rms/record/{uuid}
           method: delete
           cors:   yes
 
@@ -68,7 +68,7 @@ functions:
     handler: src/update.update
     events:
       - http:
-          path:   rms/record/{id}
+          path:   rms/record/{uuid}
           method: put
           cors:   yes
 
@@ -79,11 +79,11 @@ resources:
       Properties:
         AttributeDefinitions:
           -
-            AttributeName: id
+            AttributeName: uuid
             AttributeType: S
         KeySchema:
           -
-            AttributeName: id
+            AttributeName: uuid
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits:  1
